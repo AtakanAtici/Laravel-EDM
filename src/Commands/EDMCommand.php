@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace AtakanAtici\EDM\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class EDMCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-edm';
 
     public $description = 'My command';
 

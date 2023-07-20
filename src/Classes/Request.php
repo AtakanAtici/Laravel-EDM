@@ -7,8 +7,9 @@ use SoapClient;
 class Request
 {
     public $hataMesaj;
+
     public $hataKod;
-    
+
     public function send($func_name, $param)
     {
         try {

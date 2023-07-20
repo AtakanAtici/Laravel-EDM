@@ -2,6 +2,8 @@
 
 namespace AtakanAtici\EDM\Classes;
 
+use SoapClient;
+
 class Request
 {
     public $hataMesaj;
@@ -13,7 +15,7 @@ class Request
         try {
             $this->hataKod = '0';
             $this->hataMesaj = '0';
-            $istemci = new \SoapClient(Util::$service_url, ['trace' => 1]);
+            $istemci = new SoapClient(Util::$service_url, ['trace' => 1]);
             $sonuc = $istemci->__soapCall($func_name, [$param]);
             //var_dump($istemci->__getLastRequest());
             return $sonuc;

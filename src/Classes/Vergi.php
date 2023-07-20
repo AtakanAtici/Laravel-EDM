@@ -2,17 +2,23 @@
 
 namespace AtakanAtici\EDM\Classes;
 
-
 class Vergi
 {
-    private $vergi_haric_tutar = array();
-    private $vergi_tutar = array();
+    private $vergi_haric_tutar = [];
+
+    private $vergi_tutar = [];
+
     private $sira_no;
-    private $sira_dizi = array();
-    private $vergi_oran = array();
-    private $vergi_kod = array();
-    private $vergi_ad = array();
-    private $paraBirimKod = array();
+
+    private $sira_dizi = [];
+
+    private $vergi_oran = [];
+
+    private $vergi_kod = [];
+
+    private $vergi_ad = [];
+
+    private $paraBirimKod = [];
 
     /**
      * @return mixed
@@ -24,7 +30,7 @@ class Vergi
     }
 
     /**
-     * @param mixed $vergi_haric_tutar
+     * @param  mixed  $vergi_haric_tutar
      */
     public function setVergiHaricTutar($vergi_haric_tutar)
     {
@@ -40,7 +46,7 @@ class Vergi
     }
 
     /**
-     * @param mixed $vergi_tutar
+     * @param  mixed  $vergi_tutar
      */
     public function setVergiTutar($vergi_tutar)
     {
@@ -56,7 +62,7 @@ class Vergi
     }
 
     /**
-     * @param mixed $sira_no
+     * @param  mixed  $sira_no
      */
     public function setSiraNo($sira_no)
     {
@@ -73,7 +79,7 @@ class Vergi
     }
 
     /**
-     * @param mixed $vergi_oran
+     * @param  mixed  $vergi_oran
      */
     public function setVergiOran($vergi_oran)
     {
@@ -89,7 +95,7 @@ class Vergi
     }
 
     /**
-     * @param mixed $vergi_kod
+     * @param  mixed  $vergi_kod
      */
     public function setVergiKod($vergi_kod)
     {
@@ -101,11 +107,11 @@ class Vergi
      */
     public function getVergiAd($idx = null)
     {
-        return ($idx == null) ? $this->vergi_ad : $this->vergi_ad[$idx];;
+        return ($idx == null) ? $this->vergi_ad : $this->vergi_ad[$idx];
     }
 
     /**
-     * @param mixed $vergi_ad
+     * @param  mixed  $vergi_ad
      */
     public function setVergiAd($vergi_ad)
     {
@@ -113,7 +119,7 @@ class Vergi
     }
 
     /**
-     * @param mixed $paraBirimKod
+     * @param  mixed  $paraBirimKod
      */
     public function setParaBirimKod($paraBirimKod)
     {
@@ -128,27 +134,27 @@ class Vergi
     public function readXML()
     {
         $xmlStr = '<cac:TaxTotal>';
-        $xmlStr .= '<cbc:TaxAmount currencyID="' . $this->paraBirimKod . '">' . $this->getVergiTutar() . '</cbc:TaxAmount>';
+        $xmlStr .= '<cbc:TaxAmount currencyID="'.$this->paraBirimKod.'">'.$this->getVergiTutar().'</cbc:TaxAmount>';
         foreach ($this->sira_dizi as $sno => $v) {
             $xmlStr .= '<cac:TaxSubtotal>';
-            $xmlStr .= '<cbc:TaxableAmount currencyID="' . $this->paraBirimKod . '">' . $this->getVergiHaricTutar($sno) . '</cbc:TaxableAmount>';
-            $xmlStr .= '<cbc:TaxAmount currencyID="' . $this->paraBirimKod . '">' . $this->getVergiTutar() . '</cbc:TaxAmount>';
-            $xmlStr .= '<cbc:CalculationSequenceNumeric>' . $sno . '</cbc:CalculationSequenceNumeric>';
-            $xmlStr .= '<cbc:Percent>' . $this->getVergiOran($sno) . '</cbc:Percent>';
+            $xmlStr .= '<cbc:TaxableAmount currencyID="'.$this->paraBirimKod.'">'.$this->getVergiHaricTutar($sno).'</cbc:TaxableAmount>';
+            $xmlStr .= '<cbc:TaxAmount currencyID="'.$this->paraBirimKod.'">'.$this->getVergiTutar().'</cbc:TaxAmount>';
+            $xmlStr .= '<cbc:CalculationSequenceNumeric>'.$sno.'</cbc:CalculationSequenceNumeric>';
+            $xmlStr .= '<cbc:Percent>'.$this->getVergiOran($sno).'</cbc:Percent>';
             $xmlStr .= '<cac:TaxCategory>';
             if (floatval($this->getVergiOran($sno)) == 0) {
                 $xmlStr .= '<cbc:TaxExemptionReasonCode>351</cbc:TaxExemptionReasonCode>';
                 $xmlStr .= '<cbc:TaxExemptionReason>KDV(0015)den muaf</cbc:TaxExemptionReason>';
             }
             $xmlStr .= '<cac:TaxScheme>';
-            $xmlStr .= '<cbc:Name>' . $this->getVergiAd($sno) . '</cbc:Name>';
-            $xmlStr .= '<cbc:TaxTypeCode>' . $this->getVergiKod($sno) . '</cbc:TaxTypeCode>';
+            $xmlStr .= '<cbc:Name>'.$this->getVergiAd($sno).'</cbc:Name>';
+            $xmlStr .= '<cbc:TaxTypeCode>'.$this->getVergiKod($sno).'</cbc:TaxTypeCode>';
             $xmlStr .= '</cac:TaxScheme>';
             $xmlStr .= '</cac:TaxCategory>';
             $xmlStr .= '</cac:TaxSubtotal>';
         }
         $xmlStr .= '</cac:TaxTotal>';
+
         return $xmlStr;
     }
-
 }

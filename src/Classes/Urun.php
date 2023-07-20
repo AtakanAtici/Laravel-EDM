@@ -2,17 +2,24 @@
 
 namespace AtakanAtici\EDM\Classes;
 
-
 class Urun
 {
     private $serbest_aciklama;
+
     private $ad;
+
     private $keyword;
+
     private $marka;
+
     private $model;
+
     private $alici_kod;
+
     private $satici_kod;
+
     private $uretici_kod;
+
     private $emtia_sinif;
 
     /**
@@ -24,7 +31,7 @@ class Urun
     }
 
     /**
-     * @param mixed $serbest_aciklama
+     * @param  mixed  $serbest_aciklama
      */
     public function setSerbestAciklama($serbest_aciklama)
     {
@@ -40,7 +47,7 @@ class Urun
     }
 
     /**
-     * @param mixed $ad
+     * @param  mixed  $ad
      */
     public function setAd($ad)
     {
@@ -56,7 +63,7 @@ class Urun
     }
 
     /**
-     * @param mixed $keyword
+     * @param  mixed  $keyword
      */
     public function setKeyword($keyword)
     {
@@ -72,7 +79,7 @@ class Urun
     }
 
     /**
-     * @param mixed $marka
+     * @param  mixed  $marka
      */
     public function setMarka($marka)
     {
@@ -88,7 +95,7 @@ class Urun
     }
 
     /**
-     * @param mixed $model
+     * @param  mixed  $model
      */
     public function setModel($model)
     {
@@ -104,7 +111,7 @@ class Urun
     }
 
     /**
-     * @param mixed $alici_kod
+     * @param  mixed  $alici_kod
      */
     public function setAliciKod($alici_kod)
     {
@@ -120,7 +127,7 @@ class Urun
     }
 
     /**
-     * @param mixed $satici_kod
+     * @param  mixed  $satici_kod
      */
     public function setSaticiKod($satici_kod)
     {
@@ -136,7 +143,7 @@ class Urun
     }
 
     /**
-     * @param mixed $uretici_kod
+     * @param  mixed  $uretici_kod
      */
     public function setUreticiKod($uretici_kod)
     {
@@ -152,7 +159,7 @@ class Urun
     }
 
     /**
-     * @param mixed $emtia_sinif
+     * @param  mixed  $emtia_sinif
      */
     public function setEmtiaSinif($emtia_sinif)
     {
@@ -168,41 +175,42 @@ class Urun
     }
 
     /**
-     * @param mixed $ozel_kod
+     * @param  mixed  $ozel_kod
      */
     public function setOzelKod($ozel_kod)
     {
         $this->ozel_kod = $ozel_kod;
     }
 
-    public function readXML(){
+    public function readXML()
+    {
         $xmlStr = '<cac:Item> ';
-        if($this->getSerbestAciklama()!=""){
-            $xmlStr.='<cbc:Description>'.$this->getSerbestAciklama().'</cbc:Description>';
+        if ($this->getSerbestAciklama() != '') {
+            $xmlStr .= '<cbc:Description>'.$this->getSerbestAciklama().'</cbc:Description>';
         }
-        if($this->getAd()!=""){
-            $xmlStr.='<cbc:Name>'.$this->getAd().'</cbc:Name>';
+        if ($this->getAd() != '') {
+            $xmlStr .= '<cbc:Name>'.$this->getAd().'</cbc:Name>';
         }
-        if($this->getMarka()!=""){
-            $xmlStr.='<cbc:BrandName>'.$this->getMarka().'</cbc:BrandName>';
+        if ($this->getMarka() != '') {
+            $xmlStr .= '<cbc:BrandName>'.$this->getMarka().'</cbc:BrandName>';
         }
-        if($this->getModel()!=""){
-            $xmlStr.='<cbc:ModelName>'.$this->getModel().'</cbc:ModelName>';
+        if ($this->getModel() != '') {
+            $xmlStr .= '<cbc:ModelName>'.$this->getModel().'</cbc:ModelName>';
         }
-        if($this->getAliciKod()!=""){
-            $xmlStr.='<cac:BuyersItemIdentification><cbc:ID>'.$this->getAliciKod().'</cbc:ID></cac:BuyersItemIdentification>';
+        if ($this->getAliciKod() != '') {
+            $xmlStr .= '<cac:BuyersItemIdentification><cbc:ID>'.$this->getAliciKod().'</cbc:ID></cac:BuyersItemIdentification>';
         }
-        if($this->getSaticiKod()!=""){
-            $xmlStr.='<cac:SellersItemIdentification><cbc:ID>'.$this->getAliciKod().'</cbc:ID></cac:SellersItemIdentification>';
+        if ($this->getSaticiKod() != '') {
+            $xmlStr .= '<cac:SellersItemIdentification><cbc:ID>'.$this->getAliciKod().'</cbc:ID></cac:SellersItemIdentification>';
         }
-        if($this->getUreticiKod()!=""){
-            $xmlStr.='<cac:ManufacturersItemIdentification><cbc:ID>'.$this->getAliciKod().'</cbc:ID></cac:ManufacturersItemIdentification>';
+        if ($this->getUreticiKod() != '') {
+            $xmlStr .= '<cac:ManufacturersItemIdentification><cbc:ID>'.$this->getAliciKod().'</cbc:ID></cac:ManufacturersItemIdentification>';
         }
-        if($this->getEmtiaSinif()!=""){
-            $xmlStr.='<cac:CommodityClassification><cbc:ItemClassificationCode>'.$this->getAliciKod().'</cbc:ItemClassificationCode></cac:CommodityClassification>';
+        if ($this->getEmtiaSinif() != '') {
+            $xmlStr .= '<cac:CommodityClassification><cbc:ItemClassificationCode>'.$this->getAliciKod().'</cbc:ItemClassificationCode></cac:CommodityClassification>';
         }
-        $xmlStr.='</cac:Item>';
+        $xmlStr .= '</cac:Item>';
+
         return $xmlStr;
     }
-
 }

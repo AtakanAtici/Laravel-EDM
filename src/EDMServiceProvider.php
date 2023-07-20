@@ -17,7 +17,7 @@ class EDMServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('laravel-edm')
-            ->hasConfigFile()
+            ->hasConfigFile("edm")
             ->hasMigration('create_laravel-edm_table')
             ->hasCommand(EDMCommand::class);
     }

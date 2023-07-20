@@ -4,6 +4,7 @@ namespace AtakanAtici\EDM;
 
 use AtakanAtici\EDM\Classes\Request;
 use AtakanAtici\EDM\Classes\RequestHeader;
+use SoapClient;
 
 class EDM
 {
@@ -44,9 +45,9 @@ class EDM
         $header = new RequestHeader();
         $header->session_id = '-1';
         $params = $header->getArray();
-        $param['USER_NAME'] = $username;
-        $param['PASSWORD'] = $password;
-        $request = new Request();
+        $params['USER_NAME'] = $username;
+        $params['PASSWORD'] = $password;
+        $request = new Request($this->service_url);
         $session = $request->send('login', $params);
         if ($session->SESSION_ID != '') {
             $this->setSession($session->SESSION_ID);

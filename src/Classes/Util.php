@@ -4,7 +4,7 @@ namespace AtakanAtici\EDM\Classes;
 
 class Util
 {
-    public static $service_url = '';
+    public static $service_url = 'https://test.edmbilisim.com.tr/EFaturaEDM21ea/EFaturaEDM.svc?singleWsdl';
 
     public static function GUID()
     {

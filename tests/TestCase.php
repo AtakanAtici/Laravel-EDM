@@ -2,9 +2,9 @@
 
 namespace AtakanAtici\EDM\Tests;
 
+use AtakanAtici\EDM\EDMServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use AtakanAtici\EDM\EDMServiceProvider;
 
 class TestCase extends Orchestra
 {

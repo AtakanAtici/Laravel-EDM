@@ -79,47 +79,48 @@ class EDM
         }
     }
 
-    public function getUserList($okuma_zaman = "", $format = "XML")
+    public function getUserList($okuma_zaman = '', $format = 'XML')
     {
         $req_header = new RequestHeader();
         $req_header->session_id = $this->getSessionId();
         $send_data = $req_header->getArray();
-        if ($okuma_zaman != "") {
-            $send_data["REGISTER_TIME_START"] = $okuma_zaman;
+        if ($okuma_zaman != '') {
+            $send_data['REGISTER_TIME_START'] = $okuma_zaman;
         }
-        $send_data["FORMAT"] = $format;
+        $send_data['FORMAT'] = $format;
         $req = new Request();
-        $sonuc = $req->send("GetUserList", $send_data);
+        $sonuc = $req->send('GetUserList', $send_data);
         $this->setErr($req->hataKod, $req->hataMesaj);
+
         return $sonuc->Items->Items;
     }
 
-    public function checkUser($vkn = "", $alias = null, $unvan = null, $tip = null, $kayit_zaman = null)
+    public function checkUser($vkn = '', $alias = null, $unvan = null, $tip = null, $kayit_zaman = null)
     {
-        if ($vkn == "") {
+        if ($vkn == '') {
             return false;
         } else {
             $req_header = new RequestHeader();
             $req_header->session_id = $this->getSessionId();
             $send_data = $req_header->getArray();
-            $send_data["USER"]["IDENTIFIER"] = $vkn;
-            if (!is_null($alias)) {
-                $send_data["USER"]["ALIAS"] = $alias;
+            $send_data['USER']['IDENTIFIER'] = $vkn;
+            if (! is_null($alias)) {
+                $send_data['USER']['ALIAS'] = $alias;
             }
-            if (!is_null($unvan)) {
-                $send_data["USER"]["TITLE"] = $unvan;
+            if (! is_null($unvan)) {
+                $send_data['USER']['TITLE'] = $unvan;
             }
-            if (!is_null($tip)) {
-                $send_data["USER"]["TYPE"] = $tip;
+            if (! is_null($tip)) {
+                $send_data['USER']['TYPE'] = $tip;
             }
-            if (!is_null($kayit_zaman)) {
-                $send_data["USER"]["REGISTER_TIME"] = $kayit_zaman;
+            if (! is_null($kayit_zaman)) {
+                $send_data['USER']['REGISTER_TIME'] = $kayit_zaman;
             }
             $req = new Request();
-            $sonuc = $req->send("CheckUser", $send_data);
+            $sonuc = $req->send('CheckUser', $send_data);
             $this->setErr($req->hataKod, $req->hataMesaj);
+
             return $sonuc->USER;
         }
     }
-
 }

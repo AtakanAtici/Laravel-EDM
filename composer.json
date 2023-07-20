@@ -31,12 +31,14 @@
     "autoload": {
         "psr-4": {
             "AtakanAtici\\EDM\\": "src/",
+            "AtakanAtici\\EDM\\Classes": "src/Classes",
             "AtakanAtici\\EDM\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "AtakanAtici\\EDM\\Tests\\": "tests/"
+            "AtakanAtici\\EDM\\Tests\\": "tests/",
+            "AtakanAtici\\EDM\\Classes": "src/Classes"
         }
     },
     "scripts": {

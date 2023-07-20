@@ -4,7 +4,6 @@ namespace AtakanAtici\EDM;
 
 use AtakanAtici\EDM\Classes\Request;
 use AtakanAtici\EDM\Classes\RequestHeader;
-use SoapClient;
 
 class EDM
 {

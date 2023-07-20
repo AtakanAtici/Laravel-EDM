@@ -69,11 +69,12 @@ class EDM
         $req_header->session_id = $this->getSessionId();
         $param = $req_header->getArray();
         $request = new Request();
-        $sonuc = $request->send("Logout", $param);
-        if ($sonuc->REQUEST_RETURN->RETURN_CODE == "0") {
+        $sonuc = $request->send('Logout', $param);
+        if ($sonuc->REQUEST_RETURN->RETURN_CODE == '0') {
             return true;
         } else {
             $this->setErr($request->hataKod, $request->hataMesaj);
+
             return false;
         }
     }

@@ -2,9 +2,9 @@
 
 namespace AtakanAtici\EDM;
 
+use AtakanAtici\EDM\Commands\EDMCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use AtakanAtici\EDM\Commands\EDMCommand;
 
 class EDMServiceProvider extends PackageServiceProvider
 {

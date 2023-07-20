@@ -2,42 +2,65 @@
 
 namespace AtakanAtici\EDM\Classes;
 
-
 class Fatura
 {
-    const UBL_VERSION_ID = "2.1";
-    const CUSTOMIZATION_ID = "TR1.2";
-    const COPY_INDICATOR = "false";
+    const UBL_VERSION_ID = '2.1';
+
+    const CUSTOMIZATION_ID = 'TR1.2';
+
+    const COPY_INDICATOR = 'false';
+
     private $profile_id;
-    private $id = "";
+
+    private $id = '';
+
     private $uuid;
+
     private $issue_date;
+
     private $issue_time;
+
     private $invoice_type_code;
-    private $note = array();
+
+    private $note = [];
+
     private $document_currency_code;
+
     private $line_count_numeric;
-    private $satirlar = array();
-    private $additionalDocumentReference = array();
-    private $irsaliye = array();
+
+    private $satirlar = [];
+
+    private $additionalDocumentReference = [];
+
+    private $irsaliye = [];
+
     private $teslimat = null;
+
     private $odemeTip = null;
 
     private $vergi = null;
+
     private $iskontoArttirim = null;
 
     private $satirToplam = 0.0; //Satırdaki Ürünlerin Birim Fiyat * Miktar Toplamı
+
     private $vergiHaricToplam = 0.0; //Vergiler Hariç İskontolar Eklenmiş Tutar
+
     private $vergiDahilToplam = 0.0; //Vergiler Dahil Tutar İskontolar Eklenmiş
+
     private $toplamIskonto = 0.0; //Toplam İskonto Tutarı
+
     private $yuvarlamaTutar = 0.0; //Yuvarlama Varsa Yuvarlama Tutarı
+
     private $odenecekTutar = 0.0; //Faturanın Dip Toplamı. Ödenecek Tutar
+
     /**
-     * @var Cari $duzenleyen
+     * @var Cari
      */
     private $duzenleyen;
+
     /**
-     * @var Cari $alici
+     * @var Cari
      */
     private $alici;
 
@@ -50,7 +73,7 @@ class Fatura
     }
 
     /**
-     * @param string $profile_id
+     * @param  string  $profile_id
      */
     public function setProfileId($profile_id)
     {
@@ -66,7 +89,7 @@ class Fatura
     }
 
     /**
-     * @param mixed $id
+     * @param  mixed  $id
      */
     public function setId($id)
     {
@@ -82,7 +105,7 @@ class Fatura
     }
 
     /**
-     * @param string $uuid
+     * @param  string  $uuid
      */
     public function setUuid($uuid)
     {
@@ -98,7 +121,7 @@ class Fatura
     }
 
     /**
-     * @param string $issue_date
+     * @param  string  $issue_date
      */
     public function setIssueDate($issue_date)
     {
@@ -114,7 +137,7 @@ class Fatura
     }
 
     /**
-     * @param string $issue_time
+     * @param  string  $issue_time
      */
     public function setIssueTime($issue_time)
     {
@@ -130,7 +153,7 @@ class Fatura
     }
 
     /**
-     * @param string $invoice_type_code
+     * @param  string  $invoice_type_code
      */
     public function setInvoiceTypeCode($invoice_type_code)
     {
@@ -146,7 +169,7 @@ class Fatura
     }
 
     /**
-     * @param string $note
+     * @param  string  $note
      */
     public function setNote($note)
     {
@@ -162,7 +185,7 @@ class Fatura
     }
 
     /**
-     * @param mixed $document_currency_code
+     * @param  mixed  $document_currency_code
      */
     public function setDocumentCurrencyCode($document_currency_code)
     {
@@ -178,7 +201,7 @@ class Fatura
     }
 
     /**
-     * @param mixed $line_count_numeric
+     * @param  mixed  $line_count_numeric
      */
     public function setLineCountNumeric($line_count_numeric)
     {
@@ -193,12 +216,9 @@ class Fatura
         return $this->duzenleyen;
     }
 
-    /**
-     * @param Cari $duzenleyen
-     */
     public function setDuzenleyen(Cari $duzenleyen)
     {
-        $duzenleyen->setPozisyon("GONDEREN");
+        $duzenleyen->setPozisyon('GONDEREN');
         $this->duzenleyen = $duzenleyen;
     }
 
@@ -210,12 +230,9 @@ class Fatura
         return $this->alici;
     }
 
-    /**
-     * @param Cari $alici
-     */
     public function setAlici(Cari $alici)
     {
-        $alici->setPozisyon("ALICI");
+        $alici->setPozisyon('ALICI');
         $this->alici = $alici;
     }
 
@@ -228,7 +245,7 @@ class Fatura
     }
 
     /**
-     * @param float $satirToplam
+     * @param  float  $satirToplam
      */
     public function setSatirToplam($satirToplam)
     {
@@ -244,7 +261,7 @@ class Fatura
     }
 
     /**
-     * @param float $vergiHaricToplam
+     * @param  float  $vergiHaricToplam
      */
     public function setVergiHaricToplam($vergiHaricToplam)
     {
@@ -260,7 +277,7 @@ class Fatura
     }
 
     /**
-     * @param float $vergiDahilToplam
+     * @param  float  $vergiDahilToplam
      */
     public function setVergiDahilToplam($vergiDahilToplam)
     {
@@ -276,7 +293,7 @@ class Fatura
     }
 
     /**
-     * @param float $toplamIskonto
+     * @param  float  $toplamIskonto
      */
     public function setToplamIskonto($toplamIskonto)
     {
@@ -292,7 +309,7 @@ class Fatura
     }
 
     /**
-     * @param float $yuvarlamaTutar
+     * @param  float  $yuvarlamaTutar
      */
     public function setYuvarlamaTutar($yuvarlamaTutar)
     {
@@ -308,7 +325,7 @@ class Fatura
     }
 
     /**
-     * @param float $odenecekTutar
+     * @param  float  $odenecekTutar
      */
     public function setOdenecekTutar($odenecekTutar)
     {
@@ -324,7 +341,7 @@ class Fatura
     }
 
     /**
-     * @param array $vergi_toplam
+     * @param  array  $vergi_toplam
      */
     public function setVergi($vergi_toplam)
     {
@@ -340,7 +357,7 @@ class Fatura
     }
 
     /**
-     * @param null $iskontoArttirim
+     * @param  null  $iskontoArttirim
      */
     public function setIskontoArttirim(IskontoArttirim $iskontoArttirim)
     {
@@ -369,7 +386,7 @@ class Fatura
     }
 
     /**
-     * @param null $teslimat
+     * @param  null  $teslimat
      */
     public function setTeslimat(Teslimat $teslimat)
     {
@@ -385,16 +402,15 @@ class Fatura
     }
 
     /**
-     * @param null $odemeTip
+     * @param  null  $odemeTip
      */
     public function setOdemeTip(OdemeSekli $odemeTip)
     {
         $this->odemeTip = $odemeTip;
     }
 
-
     /**
-     * @param array $satirlar
+     * @param  array  $satirlar
      */
     public function addSatir(Satir $satir)
     {
@@ -411,13 +427,12 @@ class Fatura
     }
 
     /**
-     * @param array $additionalDocumentReference
+     * @param  array  $additionalDocumentReference
      */
     public function setAdditionalDocumentReference($additionalDocumentReference)
     {
         $this->additionalDocumentReference = $additionalDocumentReference;
     }
-
 
     public function readXML()
     {
@@ -430,27 +445,27 @@ class Fatura
         $xmlStr .= 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 UBL-Invoice-2.1.xsd" ';
         $xmlStr .= 'xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">';
         $xmlStr .= '<ext:UBLExtensions><ext:UBLExtension><ext:ExtensionContent /></ext:UBLExtension></ext:UBLExtensions>';
-        $xmlStr .= '<cbc:UBLVersionID>' . self::UBL_VERSION_ID . '</cbc:UBLVersionID>';
-        $xmlStr .= '<cbc:CustomizationID>' . self::CUSTOMIZATION_ID . '</cbc:CustomizationID>';
-        $xmlStr .= '<cbc:ProfileID>' . $this->getProfileId() . '</cbc:ProfileID>';
-        if ($this->getId() != "") {
-            $xmlStr .= '<cbc:ID>' . $this->getId() . '</cbc:ID>';
+        $xmlStr .= '<cbc:UBLVersionID>'.self::UBL_VERSION_ID.'</cbc:UBLVersionID>';
+        $xmlStr .= '<cbc:CustomizationID>'.self::CUSTOMIZATION_ID.'</cbc:CustomizationID>';
+        $xmlStr .= '<cbc:ProfileID>'.$this->getProfileId().'</cbc:ProfileID>';
+        if ($this->getId() != '') {
+            $xmlStr .= '<cbc:ID>'.$this->getId().'</cbc:ID>';
         } else {
             $xmlStr .= '<cbc:ID />';
         }
-        $xmlStr .= '<cbc:CopyIndicator>' . self::COPY_INDICATOR . '</cbc:CopyIndicator>';
-        $xmlStr .= '<cbc:UUID>' . $this->getUuid() . '</cbc:UUID>';
-        $xmlStr .= '<cbc:IssueDate>' . $this->getIssueDate() . '</cbc:IssueDate>';
-        $xmlStr .= '<cbc:IssueTime>' . $this->getIssueTime() . '</cbc:IssueTime>';
-        $xmlStr .= '<cbc:InvoiceTypeCode>' . $this->getInvoiceTypeCode() . '</cbc:InvoiceTypeCode>';
+        $xmlStr .= '<cbc:CopyIndicator>'.self::COPY_INDICATOR.'</cbc:CopyIndicator>';
+        $xmlStr .= '<cbc:UUID>'.$this->getUuid().'</cbc:UUID>';
+        $xmlStr .= '<cbc:IssueDate>'.$this->getIssueDate().'</cbc:IssueDate>';
+        $xmlStr .= '<cbc:IssueTime>'.$this->getIssueTime().'</cbc:IssueTime>';
+        $xmlStr .= '<cbc:InvoiceTypeCode>'.$this->getInvoiceTypeCode().'</cbc:InvoiceTypeCode>';
         if (count($this->getNote()) > 0) {
             $listNote = $this->getNote();
             foreach ($listNote as $k => $v) {
-                $xmlStr .= '<cbc:Note>' . $v . '</cbc:Note>';
+                $xmlStr .= '<cbc:Note>'.$v.'</cbc:Note>';
             }
         }
-        $xmlStr .= '<cbc:DocumentCurrencyCode>' . $this->getDocumentCurrencyCode() . '</cbc:DocumentCurrencyCode>';
-        $xmlStr .= '<cbc:LineCountNumeric>' . $this->getLineCountNumeric() . '</cbc:LineCountNumeric>';
+        $xmlStr .= '<cbc:DocumentCurrencyCode>'.$this->getDocumentCurrencyCode().'</cbc:DocumentCurrencyCode>';
+        $xmlStr .= '<cbc:LineCountNumeric>'.$this->getLineCountNumeric().'</cbc:LineCountNumeric>';
         //İrsaliye Varsa Irsaliye Bilgisi Ekleniyor
         if (count($this->irsaliye) > 0) {
             foreach ($this->irsaliye as $irs) {
@@ -487,21 +502,21 @@ class Fatura
                 $satir_vergi->setSiraNo(1);
                 $satir_vergi->setVergiHaricTutar(0);
                 $satir_vergi->setVergiTutar($lineTaxTotal);
-                $satir_vergi->setParaBirimKod("TRY");
+                $satir_vergi->setParaBirimKod('TRY');
                 $satir_vergi->setVergiOran($taxRate);
-                $satir_vergi->setVergiKod("0015");
-                $satir_vergi->setVergiAd("KDV GERCEK");
+                $satir_vergi->setVergiKod('0015');
+                $satir_vergi->setVergiAd('KDV GERCEK');
                 $xmlStr .= $satir_vergi->readXML();
             }
         }
         $xmlStr .= '<cac:LegalMonetaryTotal>';
-        $xmlStr .= '<cbc:LineExtensionAmount currencyID="' . $this->getDocumentCurrencyCode() . '">' . $this->getSatirToplam() . '</cbc:LineExtensionAmount>';
-        $xmlStr .= '<cbc:TaxExclusiveAmount currencyID="' . $this->getDocumentCurrencyCode() . '">' . $this->getVergiHaricToplam() . '</cbc:TaxExclusiveAmount>';
-        $xmlStr .= '<cbc:TaxInclusiveAmount currencyID="' . $this->getDocumentCurrencyCode() . '">' . $this->getVergiDahilToplam() . '</cbc:TaxInclusiveAmount>';
+        $xmlStr .= '<cbc:LineExtensionAmount currencyID="'.$this->getDocumentCurrencyCode().'">'.$this->getSatirToplam().'</cbc:LineExtensionAmount>';
+        $xmlStr .= '<cbc:TaxExclusiveAmount currencyID="'.$this->getDocumentCurrencyCode().'">'.$this->getVergiHaricToplam().'</cbc:TaxExclusiveAmount>';
+        $xmlStr .= '<cbc:TaxInclusiveAmount currencyID="'.$this->getDocumentCurrencyCode().'">'.$this->getVergiDahilToplam().'</cbc:TaxInclusiveAmount>';
         if ($this->getToplamIskonto() > 0) {
-            $xmlStr .= '<cbc:AllowanceTotalAmount currencyID="' . $this->getDocumentCurrencyCode() . '">' . $this->getToplamIskonto() . '</cbc:AllowanceTotalAmount>';
+            $xmlStr .= '<cbc:AllowanceTotalAmount currencyID="'.$this->getDocumentCurrencyCode().'">'.$this->getToplamIskonto().'</cbc:AllowanceTotalAmount>';
         }
-        $xmlStr .= '<cbc:PayableAmount currencyID="' . $this->getDocumentCurrencyCode() . '">' . $this->getOdenecekTutar() . '</cbc:PayableAmount>';
+        $xmlStr .= '<cbc:PayableAmount currencyID="'.$this->getDocumentCurrencyCode().'">'.$this->getOdenecekTutar().'</cbc:PayableAmount>';
         $xmlStr .= '</cac:LegalMonetaryTotal>';
         //Satırlar Ekleniyor
         if (count($lines) > 0) {
@@ -510,7 +525,7 @@ class Fatura
             }
         }
         $xmlStr .= '</Invoice>';
+
         return $xmlStr;
     }
-
 }

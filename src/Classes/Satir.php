@@ -1,22 +1,30 @@
 <?php
-namespace AtakanAtici\EDM\Classes;
 
+namespace AtakanAtici\EDM\Classes;
 
 class Satir
 {
     private $sira_no;
+
     private $birim;
+
     private $miktar;
-    private $satir_toplam   =   0.0;
-    private $birim_fiyat    =   0.0;
+
+    private $satir_toplam = 0.0;
+
+    private $birim_fiyat = 0.0;
+
     private $paraBirimKod;
-    private $iskontoArttirim=   null;
+
+    private $iskontoArttirim = null;
+
     /**
-     * @var Vergi $vergi
+     * @var Vergi
      */
-    private $vergi = array();
+    private $vergi = [];
+
     /**
-     * @var Urun $urun
+     * @var Urun
      */
     private $urun;
 
@@ -29,12 +37,13 @@ class Satir
     }
 
     /**
-     * @param mixed $sira_no
+     * @param  mixed  $sira_no
      */
     public function setSiraNo($sira_no)
     {
         $this->sira_no = $sira_no;
     }
+
     /**
      * @return mixed
      */
@@ -44,7 +53,7 @@ class Satir
     }
 
     /**
-     * @param mixed $birim
+     * @param  mixed  $birim
      */
     public function setBirim($birim)
     {
@@ -60,7 +69,7 @@ class Satir
     }
 
     /**
-     * @param mixed $miktar
+     * @param  mixed  $miktar
      */
     public function setMiktar($miktar)
     {
@@ -76,7 +85,7 @@ class Satir
     }
 
     /**
-     * @param float $satir_toplam
+     * @param  float  $satir_toplam
      */
     public function setSatirToplam($satir_toplam)
     {
@@ -92,7 +101,7 @@ class Satir
     }
 
     /**
-     * @param float $birim_fiyat
+     * @param  float  $birim_fiyat
      */
     public function setBirimFiyat($birim_fiyat)
     {
@@ -100,7 +109,7 @@ class Satir
     }
 
     /**
-     * @param mixed $paraBirimKod
+     * @param  mixed  $paraBirimKod
      */
     public function setParaBirimKod($paraBirimKod)
     {
@@ -111,17 +120,15 @@ class Satir
     {
         return $this->paraBirimKod;
     }
+
     /**
      * @return Vergi
      */
-    public function getVergi($idx=null)
+    public function getVergi($idx = null)
     {
-        return ($idx==null) ? $this->vergi[0] : $this->vergi[$idx];
+        return ($idx == null) ? $this->vergi[0] : $this->vergi[$idx];
     }
 
-    /**
-     * @param Vergi $vergi
-     */
     public function setVergi(Vergi $vergi)
     {
         $this->vergi[] = $vergi;
@@ -135,9 +142,6 @@ class Satir
         return $this->urun;
     }
 
-    /**
-     * @param Urun $urun
-     */
     public function setUrun(Urun $urun)
     {
         $this->urun = $urun;
@@ -152,27 +156,27 @@ class Satir
     }
 
     /**
-     * @param null $iskontoArttirim
+     * @param  null  $iskontoArttirim
      */
     public function setIskontoArttirim(IskontoArttirim $iskontoArttirim)
     {
         $this->iskontoArttirim = $iskontoArttirim;
     }
 
-
-    public function readXML(){
+    public function readXML()
+    {
         $xmlStr = '<cac:InvoiceLine>';
-        $xmlStr.='<cbc:ID>'.$this->getSiraNo().'</cbc:ID>';
-        $xmlStr.='<cbc:InvoicedQuantity unitCode="'.$this->getBirim().'">'.$this->getMiktar().'</cbc:InvoicedQuantity>';
-        $xmlStr.='<cbc:LineExtensionAmount currencyID="'.$this->paraBirimKod.'">'.$this->getSatirToplam().'</cbc:LineExtensionAmount>';
-        if(!is_null($this->getIskontoArttirim())){
-            $xmlStr.=$this->getIskontoArttirim()->readXML();
+        $xmlStr .= '<cbc:ID>'.$this->getSiraNo().'</cbc:ID>';
+        $xmlStr .= '<cbc:InvoicedQuantity unitCode="'.$this->getBirim().'">'.$this->getMiktar().'</cbc:InvoicedQuantity>';
+        $xmlStr .= '<cbc:LineExtensionAmount currencyID="'.$this->paraBirimKod.'">'.$this->getSatirToplam().'</cbc:LineExtensionAmount>';
+        if (! is_null($this->getIskontoArttirim())) {
+            $xmlStr .= $this->getIskontoArttirim()->readXML();
         }
-        $xmlStr.= $this->getVergi()->readXML();
-        $xmlStr.= $this->getUrun()->readXML();
-        $xmlStr.='<cac:Price><cbc:PriceAmount currencyID="'.$this->paraBirimKod.'">'.$this->getBirimFiyat().'</cbc:PriceAmount></cac:Price>';
-        $xmlStr.='</cac:InvoiceLine>';
+        $xmlStr .= $this->getVergi()->readXML();
+        $xmlStr .= $this->getUrun()->readXML();
+        $xmlStr .= '<cac:Price><cbc:PriceAmount currencyID="'.$this->paraBirimKod.'">'.$this->getBirimFiyat().'</cbc:PriceAmount></cac:Price>';
+        $xmlStr .= '</cac:InvoiceLine>';
+
         return $xmlStr;
     }
-
 }

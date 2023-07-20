@@ -2,28 +2,46 @@
 
 namespace AtakanAtici\EDM\Classes;
 
-
 class Cari
 {
     private $website;
+
     private $vergi_daire;
+
     private $vkn;
+
     private $mersisno;
+
     private $hizmetno;
+
     private $ticaret_sicil_no;
+
     private $unvan;
+
     private $adres;
+
     private $ilce;
+
     private $il;
+
     private $ulke_kod;
+
     private $ulke_ad;
+
     private $telefon;
+
     private $eposta;
-    private $tip = "TUZELKISI";
+
+    private $tip = 'TUZELKISI';
+
     private $gibUrn;
+
     private $pozisyon;
+
     private $tckn;
+
     private $ad;
+
     private $soyad;
 
     /**
@@ -35,7 +53,7 @@ class Cari
     }
 
     /**
-     * @param mixed $website
+     * @param  mixed  $website
      */
     public function setWebsite($website)
     {
@@ -51,7 +69,7 @@ class Cari
     }
 
     /**
-     * @param mixed $vergi_daire
+     * @param  mixed  $vergi_daire
      */
     public function setVergiDaire($vergi_daire)
     {
@@ -67,7 +85,7 @@ class Cari
     }
 
     /**
-     * @param mixed $vkn
+     * @param  mixed  $vkn
      */
     public function setVkn($vkn)
     {
@@ -83,7 +101,7 @@ class Cari
     }
 
     /**
-     * @param mixed $tckn
+     * @param  mixed  $tckn
      */
     public function setTckn($tckn)
     {
@@ -99,7 +117,7 @@ class Cari
     }
 
     /**
-     * @param mixed $ad
+     * @param  mixed  $ad
      */
     public function setAd($ad)
     {
@@ -115,7 +133,7 @@ class Cari
     }
 
     /**
-     * @param mixed $soyad
+     * @param  mixed  $soyad
      */
     public function setSoyad($soyad)
     {
@@ -131,7 +149,7 @@ class Cari
     }
 
     /**
-     * @param mixed $mersisno
+     * @param  mixed  $mersisno
      */
     public function setMersisno($mersisno)
     {
@@ -147,7 +165,7 @@ class Cari
     }
 
     /**
-     * @param mixed $hizmetno
+     * @param  mixed  $hizmetno
      */
     public function setHizmetno($hizmetno)
     {
@@ -163,7 +181,7 @@ class Cari
     }
 
     /**
-     * @param mixed $ticaret_sicil_no
+     * @param  mixed  $ticaret_sicil_no
      */
     public function setTicaretSicilNo($ticaret_sicil_no)
     {
@@ -179,7 +197,7 @@ class Cari
     }
 
     /**
-     * @param mixed $unvan
+     * @param  mixed  $unvan
      */
     public function setUnvan($unvan)
     {
@@ -195,7 +213,7 @@ class Cari
     }
 
     /**
-     * @param mixed $adres
+     * @param  mixed  $adres
      */
     public function setAdres($adres)
     {
@@ -211,7 +229,7 @@ class Cari
     }
 
     /**
-     * @param mixed $ilce
+     * @param  mixed  $ilce
      */
     public function setIlce($ilce)
     {
@@ -227,7 +245,7 @@ class Cari
     }
 
     /**
-     * @param mixed $il
+     * @param  mixed  $il
      */
     public function setIl($il)
     {
@@ -243,7 +261,7 @@ class Cari
     }
 
     /**
-     * @param mixed $ulke_kod
+     * @param  mixed  $ulke_kod
      */
     public function setUlkeKod($ulke_kod)
     {
@@ -259,7 +277,7 @@ class Cari
     }
 
     /**
-     * @param mixed $ulke_ad
+     * @param  mixed  $ulke_ad
      */
     public function setUlkeAd($ulke_ad)
     {
@@ -275,7 +293,7 @@ class Cari
     }
 
     /**
-     * @param mixed $telefon
+     * @param  mixed  $telefon
      */
     public function setTelefon($telefon)
     {
@@ -291,7 +309,7 @@ class Cari
     }
 
     /**
-     * @param mixed $eposta
+     * @param  mixed  $eposta
      */
     public function setEposta($eposta)
     {
@@ -307,7 +325,7 @@ class Cari
     }
 
     /**
-     * @param mixed $tip
+     * @param  mixed  $tip
      */
     public function setTip($tip)
     {
@@ -323,7 +341,7 @@ class Cari
     }
 
     /**
-     * @param mixed $pozisyon
+     * @param  mixed  $pozisyon
      */
     public function setPozisyon($pozisyon)
     {
@@ -339,77 +357,77 @@ class Cari
     }
 
     /**
-     * @param mixed $gibUrn
+     * @param  mixed  $gibUrn
      */
     public function setGibUrn($gibUrn)
     {
         $this->gibUrn = $gibUrn;
     }
 
-
-    public function readXML(){
-        if($this->getPozisyon()=="GONDEREN"){
+    public function readXML()
+    {
+        if ($this->getPozisyon() == 'GONDEREN') {
             $xmlStr = '<cac:AccountingSupplierParty>';
-        }else{
+        } else {
             $xmlStr = '<cac:AccountingCustomerParty>';
         }
-        $xmlStr.='<cac:Party> ';
-        if ($this->getWebsite()!=""){
-            $xmlStr.='<cbc:WebsiteURI>'.$this->getWebsite().'</cbc:WebsiteURI>';
+        $xmlStr .= '<cac:Party> ';
+        if ($this->getWebsite() != '') {
+            $xmlStr .= '<cbc:WebsiteURI>'.$this->getWebsite().'</cbc:WebsiteURI>';
         }
-        switch($this->getTip()){
-            case "TUZELKISI":
-                if ($this->getVkn()!=""){
-                    $xmlStr.='<cac:PartyIdentification><cbc:ID schemeID="VKN">'.$this->getVkn().'</cbc:ID></cac:PartyIdentification>';
+        switch ($this->getTip()) {
+            case 'TUZELKISI':
+                if ($this->getVkn() != '') {
+                    $xmlStr .= '<cac:PartyIdentification><cbc:ID schemeID="VKN">'.$this->getVkn().'</cbc:ID></cac:PartyIdentification>';
                 }
-                if ($this->getMersisno()!=""){
-                    $xmlStr.='<cac:PartyIdentification><cbc:ID schemeID="MERSISNO">'.$this->getMersisno().'</cbc:ID></cac:PartyIdentification>';
+                if ($this->getMersisno() != '') {
+                    $xmlStr .= '<cac:PartyIdentification><cbc:ID schemeID="MERSISNO">'.$this->getMersisno().'</cbc:ID></cac:PartyIdentification>';
                 }
-                if ($this->getHizmetno()!=""){
-                    $xmlStr.='<cac:PartyIdentification><cbc:ID schemeID="HIZMETNO">'.$this->getHizmetno().'</cbc:ID></cac:PartyIdentification>';
+                if ($this->getHizmetno() != '') {
+                    $xmlStr .= '<cac:PartyIdentification><cbc:ID schemeID="HIZMETNO">'.$this->getHizmetno().'</cbc:ID></cac:PartyIdentification>';
                 }
-                if($this->getUnvan()!=""){
-                    $xmlStr.='<cac:PartyName><cbc:Name>'.$this->getUnvan().'</cbc:Name></cac:PartyName>';
+                if ($this->getUnvan() != '') {
+                    $xmlStr .= '<cac:PartyName><cbc:Name>'.$this->getUnvan().'</cbc:Name></cac:PartyName>';
                 }
                 break;
-            case "GERCEKKISI":
-                if($this->getTckn()!=""){
-                    $xmlStr.='<cac:PartyIdentification><cbc:ID schemeID="TCKN">'.$this->getTckn().'</cbc:ID></cac:PartyIdentification>';
+            case 'GERCEKKISI':
+                if ($this->getTckn() != '') {
+                    $xmlStr .= '<cac:PartyIdentification><cbc:ID schemeID="TCKN">'.$this->getTckn().'</cbc:ID></cac:PartyIdentification>';
                 }
-                if($this->getUnvan()!=""){
-                    $xmlStr.='<cac:PartyName><cbc:Name>'.$this->getUnvan().'</cbc:Name></cac:PartyName>';
+                if ($this->getUnvan() != '') {
+                    $xmlStr .= '<cac:PartyName><cbc:Name>'.$this->getUnvan().'</cbc:Name></cac:PartyName>';
                 }
                 break;
         }
 
-        $xmlStr.='<cac:PostalAddress> ';
-        $xmlStr.='<cbc:BuildingName>'.$this->getAdres().'</cbc:BuildingName>';
-        $xmlStr.='<cbc:CitySubdivisionName>'.$this->getIlce().'</cbc:CitySubdivisionName>';
-        $xmlStr.='<cbc:CityName>'.$this->getIl().'</cbc:CityName>';
-        $xmlStr.='<cac:Country>';
-        $xmlStr.='<cbc:IdentificationCode>'.$this->getUlkeKod().'</cbc:IdentificationCode>';
-        $xmlStr.='<cbc:Name>'.$this->getUlkeAd().'</cbc:Name>';
-        $xmlStr.='</cac:Country>';
-        $xmlStr.='</cac:PostalAddress>';
-        $xmlStr.='<cac:PartyTaxScheme><cac:TaxScheme><cbc:Name>'.$this->getVergiDaire().'</cbc:Name></cac:TaxScheme></cac:PartyTaxScheme>';
-        $xmlStr.='<cac:Contact>';
-        $xmlStr.='<cbc:Telephone>'.$this->getTelefon().'</cbc:Telephone>';
-        $xmlStr.='<cbc:ElectronicMail>'.$this->getEposta().'</cbc:ElectronicMail>';
-        $xmlStr.='</cac:Contact>';
-        if($this->getTip()=="GERCEKKISI"){
-            if($this->getAd()!="" && $this->getSoyad()!=""){
-                $xmlStr.='<cac:Person><cbc:FirstName>'.$this->getAd().'</cbc:FirstName><cbc:FamilyName>'.$this->getSoyad().'</cbc:FamilyName></cac:Person>';
+        $xmlStr .= '<cac:PostalAddress> ';
+        $xmlStr .= '<cbc:BuildingName>'.$this->getAdres().'</cbc:BuildingName>';
+        $xmlStr .= '<cbc:CitySubdivisionName>'.$this->getIlce().'</cbc:CitySubdivisionName>';
+        $xmlStr .= '<cbc:CityName>'.$this->getIl().'</cbc:CityName>';
+        $xmlStr .= '<cac:Country>';
+        $xmlStr .= '<cbc:IdentificationCode>'.$this->getUlkeKod().'</cbc:IdentificationCode>';
+        $xmlStr .= '<cbc:Name>'.$this->getUlkeAd().'</cbc:Name>';
+        $xmlStr .= '</cac:Country>';
+        $xmlStr .= '</cac:PostalAddress>';
+        $xmlStr .= '<cac:PartyTaxScheme><cac:TaxScheme><cbc:Name>'.$this->getVergiDaire().'</cbc:Name></cac:TaxScheme></cac:PartyTaxScheme>';
+        $xmlStr .= '<cac:Contact>';
+        $xmlStr .= '<cbc:Telephone>'.$this->getTelefon().'</cbc:Telephone>';
+        $xmlStr .= '<cbc:ElectronicMail>'.$this->getEposta().'</cbc:ElectronicMail>';
+        $xmlStr .= '</cac:Contact>';
+        if ($this->getTip() == 'GERCEKKISI') {
+            if ($this->getAd() != '' && $this->getSoyad() != '') {
+                $xmlStr .= '<cac:Person><cbc:FirstName>'.$this->getAd().'</cbc:FirstName><cbc:FamilyName>'.$this->getSoyad().'</cbc:FamilyName></cac:Person>';
             }
 
         }
 
-        $xmlStr.='</cac:Party>';
-        if($this->getPozisyon()=="GONDEREN"){
-            $xmlStr.='</cac:AccountingSupplierParty>';
-        }else{
-            $xmlStr.='</cac:AccountingCustomerParty>';
+        $xmlStr .= '</cac:Party>';
+        if ($this->getPozisyon() == 'GONDEREN') {
+            $xmlStr .= '</cac:AccountingSupplierParty>';
+        } else {
+            $xmlStr .= '</cac:AccountingCustomerParty>';
         }
+
         return $xmlStr;
     }
-
 }

@@ -29,17 +29,20 @@ class EDM
         $this->err = ['code' => $code, 'message' => $message];
     }
 
-    public function getSession(): string
+    //get current session id
+    public function getSessionId(): mixed
     {
         return $this->session_id ?? session('EFATURA_SESSION');
     }
 
+    //set current session id
     public function setSession($session_id): void
     {
         $this->session_id = $session_id;
         session(['EFATURA_SESSION' => $session_id]);
     }
 
+    //login func must be called before other functions
     public function login($username, $password): bool
     {
         $header = new RequestHeader();
@@ -56,6 +59,22 @@ class EDM
         } else {
             $this->setErr($request->hataKod, $request->hataMesaj);
 
+            return false;
+        }
+    }
+
+    //logout func must be called after other functions
+    public function logout()
+    {
+        $req_header = new RequestHeader();
+        $req_header->session_id = $this->getSessionId();
+        $param = $req_header->getArray();
+        $request = new Request();
+        $sonuc = $request->send("Logout", $param);
+        if ($sonuc->REQUEST_RETURN->RETURN_CODE == "0") {
+            return true;
+        } else {
+            $this->setErr($request->hataKod, $request->hataMesaj);
             return false;
         }
     }

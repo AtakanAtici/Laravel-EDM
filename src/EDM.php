@@ -2,6 +2,7 @@
 
 namespace AtakanAtici\EDM;
 
+use AtakanAtici\EDM\Classes\Fatura;
 use AtakanAtici\EDM\Classes\Request;
 use AtakanAtici\EDM\Classes\RequestHeader;
 
@@ -121,5 +122,23 @@ class EDM
             return $sonuc->USER;
         }
     }
+
+    public function sendInvoice(Fatura $fatura)
+    {
+
+        $req_header = new RequestHeader();
+        $req_header->session_id = session('EFATURA_SESSION');
+        $send_data = $req_header->getArray();
+        $readFatura = $fatura->readXML();
+        echo $readFatura;
+        $send_data["SENDER"] = array("_" => "", "alias" => $fatura->getDuzenleyen()->getGibUrn(), "vkn" => $fatura->getDuzenleyen()->getVkn());
+        $send_data["RECEIVER"] = array("_" => "", "alias" => $fatura->getAlici()->getGibUrn(), "vkn" => $fatura->getAlici()->getVkn());
+        $send_data["INVOICE"]["CONTENT"] = $readFatura;
+        $req = new Request();
+        $sonuc = $req->send("SendInvoice", $send_data);
+        $this->setErr($req->hataKod, $req->hataMesaj);
+        return $sonuc;
+    }
+
 
 }

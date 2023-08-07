@@ -13,26 +13,25 @@ return [
     'fatura_tur' => [
         'SATIS' => 'Satış',
     ],
-    "cari_tur" => [
-        "TUZELKISI" => "Tüzel Kişi",
-        "GERCEKKISI" => "Gerçek Kişi",
+    'cari_tur' => [
+        'TUZELKISI' => 'Tüzel Kişi',
+        'GERCEKKISI' => 'Gerçek Kişi',
     ],
-    "fatura_durum" => [
-        "0" => "Gönderilemedi",
-        "1" => "Gönderildi",
+    'fatura_durum' => [
+        '0' => 'Gönderilemedi',
+        '1' => 'Gönderildi',
     ],
-    "fatura_durum_renk" => [
-        "0" => "danger",
-        "1" => "success",
-    ],
-
-    "fatura_odeme_sekli" => [
-        "NAKIT" => "Nakit",
-        "KREDIKARTI" => "Kredi Kartı",
-        "CEK" => "Çek",
-        "SENET" => "Senet",
-        "DIGER" => "Diğer",
+    'fatura_durum_renk' => [
+        '0' => 'danger',
+        '1' => 'success',
     ],
 
+    'fatura_odeme_sekli' => [
+        'NAKIT' => 'Nakit',
+        'KREDIKARTI' => 'Kredi Kartı',
+        'CEK' => 'Çek',
+        'SENET' => 'Senet',
+        'DIGER' => 'Diğer',
+    ],
 
 ];

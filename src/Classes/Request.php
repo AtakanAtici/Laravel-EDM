@@ -20,7 +20,7 @@ class Request
             // print_r($istemci->__getFunctions());
             // die;
             $sonuc = $istemci->__soapCall($func_name, [$param]);
-            //TODO: top function is not working because of the firing exception 
+            //TODO: top function is not working because of the firing exception
             if (isset($sonuc->HataKodu)) {
                 $this->hataKod = $sonuc->HataKodu;
                 $this->hataMesaj = $sonuc->HataMesaji;

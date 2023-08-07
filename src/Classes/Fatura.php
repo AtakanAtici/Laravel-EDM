@@ -434,7 +434,7 @@ class Fatura
         $this->additionalDocumentReference = $additionalDocumentReference;
     }
 
-    public function     readXML()
+    public function readXML()
     {
         $xmlStr = '<Invoice ';
         $xmlStr .= 'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" ';
@@ -491,7 +491,7 @@ class Fatura
         if (count($lines) > 0) {
             $_lineTaxTotals = [];
             foreach ($lines as $sno => $satir) {
-                if(!isset($satir->getVergi()->getVergiOran()[1])){
+                if (! isset($satir->getVergi()->getVergiOran()[1])) {
                     dd($satir);
                 }
                 if (array_key_exists($satir->getVergi()->getVergiOran()[1], $_lineTaxTotals)) {

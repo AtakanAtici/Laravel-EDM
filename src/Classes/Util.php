@@ -68,6 +68,7 @@ class Util
 
             'PACKAGE-FAIL' => ['aciklama' => 'Zarflamada Hata Alındı', 'yap' => 'RESEND'],
             'SEND-FAILED' => ['aciklama' => 'Gönderim İşlemi Hatalı Bitti, Gönderilemedi', 'yap' => 'RESEND'],
+            'CANCELLED-SUCCEED' => ['aciklama' => 'Fatura İptal Edildi.', 'yap' => 'BEKLE'],
         ];
 
         return $durum[trim($statusCode)];

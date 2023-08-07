@@ -5,6 +5,7 @@ namespace AtakanAtici\EDM;
 use AtakanAtici\EDM\Classes\Fatura;
 use AtakanAtici\EDM\Classes\Request;
 use AtakanAtici\EDM\Classes\RequestHeader;
+use AtakanAtici\EDM\Classes\Util;
 
 class EDM
 {
@@ -127,19 +128,183 @@ class EDM
 
     public function sendInvoice(Fatura $fatura)
     {
-
         $req_header = new RequestHeader();
         $req_header->session_id = session('EFATURA_SESSION');
         $send_data = $req_header->getArray();
         $readFatura = $fatura->readXML();
-        echo $readFatura;
+        // echo $readFatura;
         $send_data['SENDER'] = ['_' => '', 'alias' => $fatura->getDuzenleyen()->getGibUrn(), 'vkn' => $fatura->getDuzenleyen()->getVkn()];
         $send_data['RECEIVER'] = ['_' => '', 'alias' => $fatura->getAlici()->getGibUrn(), 'vkn' => $fatura->getAlici()->getVkn()];
         $send_data['INVOICE']['CONTENT'] = $readFatura;
         $req = new Request();
         $sonuc = $req->send('SendInvoice', $send_data);
         $this->setErr($req->hataKod, $req->hataMesaj);
-
         return $sonuc;
     }
+
+    public function getIncomingInvoice($limit = 10, $vkn = null, $pk = null, $baslangicTarih = null, $bitisTarih = null, $crbaslangicTarih = null, $crbitisTarih = null)
+    {
+        $req_header = new RequestHeader();
+        $req_header->session_id = $this->getSessionId();
+        $send_data = $req_header->getArray();
+
+        $send_data["INVOICE_CONTENT_TYPE"] = "XML";
+        $send_data["INVOICE_SEARCH_KEY"]["LIMIT"] = $limit;
+        $send_data["INVOICE_SEARCH_KEY"]["LIMITSpecified"] = true;
+
+        $send_data["INVOICE_SEARCH_KEY"]["DIRECTION"] = "IN";
+        $send_data["INVOICE_SEARCH_KEY"]["READ_INCLUDED"] = true;
+        $send_data["INVOICE_SEARCH_KEY"]["READ_INCLUDEDSpecified"] = false;
+
+        if (!is_null($vkn)) {
+            $send_data["INVOICE_SEARCH_KEY"]["RECEIVER"] = $vkn;
+        }
+        if (!is_null($pk)) {
+            $send_data["INVOICE_SEARCH_KEY"]["TO"] = $pk;
+        }
+        if (!is_null($baslangicTarih)) {
+            $send_data["INVOICE_SEARCH_KEY"]["START_DATE"] = $baslangicTarih;
+            $send_data["INVOICE_SEARCH_KEY"]["START_DATESpecified"] = true;
+        }
+        if (!is_null($bitisTarih)) {
+            $send_data["INVOICE_SEARCH_KEY"]["END_DATE"] = $bitisTarih;
+            $send_data["INVOICE_SEARCH_KEY"]["END_DATESpecified"] = true;
+        }
+
+        if (!is_null($crbaslangicTarih)) {
+            $send_data["INVOICE_SEARCH_KEY"]["CR_START_DATE"] = $crbaslangicTarih;
+            $send_data["INVOICE_SEARCH_KEY"]["CR_START_DATESpecified"] = true;
+        }
+        if (!is_null($crbitisTarih)) {
+            $send_data["INVOICE_SEARCH_KEY"]["CR_END_DATE"] = $crbitisTarih;
+            $send_data["INVOICE_SEARCH_KEY"]["CR_END_DATESpecified"] = true;
+        }
+        $req = new Request();
+        $sonuc = $req->send("GetInvoice", $send_data);
+        $this->setErr($req->hataKod, $req->hataMesaj);
+
+        $cevap = array();
+        if (property_exists($sonuc, "INVOICE") && count($sonuc->INVOICE) > 0) {
+            foreach ($sonuc->INVOICE as $key => $fatura) {
+                $cevap[$key] = array(
+                    "SENDER" => $fatura->HEADER->SENDER,
+                    "RECEIVER" => $fatura->HEADER->RECEIVER,
+                    "SUPPLIER" => $fatura->HEADER->SUPPLIER,
+                    "CUSTOMER" => $fatura->HEADER->CUSTOMER,
+                    "ISSUE_DATE" => $fatura->HEADER->ISSUE_DATE,
+                    "PAYABLE_AMOUNT" => $fatura->HEADER->PAYABLE_AMOUNT->_ . " " . $fatura->HEADER->PAYABLE_AMOUNT->currencyID,
+                    "FROM" => $fatura->HEADER->FROM,
+                    "TO" => $fatura->HEADER->TO,
+                    "PROFILEID" => $fatura->HEADER->PROFILEID,
+                    "STATUS" => $fatura->HEADER->STATUS,
+                    "STATUS_DESCRIPTION" => $fatura->HEADER->STATUS_DESCRIPTION,
+                    "ACIKLAMA" => Util::invoiceStatus($fatura->HEADER->STATUS),
+                    "GIB_STATUS_CODE" => $fatura->HEADER->GIB_STATUS_CODE,
+                    "GIB_STATUS_DESCRIPTION" => $fatura->HEADER->GIB_STATUS_DESCRIPTION,
+                    "RESPONSE_CODE" => $fatura->HEADER->RESPONSE_CODE,
+                    "RESPONSE_DESCRIPTION" => $fatura->HEADER->RESPONSE_DESCRIPTION,
+                    "FILENAME" => $fatura->HEADER->FILENAME,
+                    "HASH" => $fatura->HEADER->HASH,
+                    "CDATE" => new \DateTime($fatura->HEADER->CDATE),
+                    "ENVELOPE_IDENTIFIER" => $fatura->HEADER->ENVELOPE_IDENTIFIER,
+                    "INTERNETSALES" => $fatura->HEADER->INTERNETSALES,
+                    "EARCHIVE" => $fatura->HEADER->EARCHIVE,
+                    "TRXID" => $fatura->TRXID,
+                    "UUID" => $fatura->UUID,
+                    "ID" => $fatura->ID,
+                    "TYPE" => $fatura->HEADER->INVOICE_TYPE,
+                    "SENDTYPE" => $fatura->HEADER->INVOICE_SEND_TYPE
+                );
+            }
+        }
+        return $cevap;
+    }
+
+    public function getSingleInvoice($faturaNo = null, $faturaUUID = null, $gelen = false, $contentType = "XML")
+    {
+        if (is_null($faturaNo) && is_null($faturaUUID)) {
+            return false;
+        } else {
+            $req_header = new RequestHeader();
+            $req_header->session_id = $this->getSessionId();
+            $send_data = $req_header->getArray();
+
+            $send_data["INVOICE_CONTENT_TYPE"] = $contentType;
+            $send_data["HEADER_ONLY"] = "N";
+            $send_data["INVOICE_SEARCH_KEY"]["LIMIT"] = 1;
+            $send_data["INVOICE_SEARCH_KEY"]["LIMITSpecified"] = true;
+
+            $send_data["INVOICE_SEARCH_KEY"]["DIRECTION"] = ($gelen ? "IN" : "OUT");
+            $send_data["INVOICE_SEARCH_KEY"]["ID"] = $faturaNo;
+
+            $req = new Request();
+            $sonuc = $req->send("GetInvoice", $send_data);
+            $this->setErr($req->hataKod, $req->hataMesaj);
+
+            return array(
+                "CONTENT" => $sonuc->INVOICE->CONTENT->_,
+                "SENDER" => $sonuc->INVOICE->HEADER->SENDER,
+                "RECEIVER" => $sonuc->INVOICE->HEADER->RECEIVER,
+                "SUPPLIER" => $sonuc->INVOICE->HEADER->SUPPLIER,
+                "CUSTOMER" => $sonuc->INVOICE->HEADER->CUSTOMER,
+                "ISSUE_DATE" => $sonuc->INVOICE->HEADER->ISSUE_DATE,
+                "PAYABLE_AMOUNT" => $sonuc->INVOICE->HEADER->PAYABLE_AMOUNT->_ . " " . $sonuc->INVOICE->HEADER->PAYABLE_AMOUNT->currencyID,
+                "PARABIRIMI" => $sonuc->INVOICE->HEADER->PAYABLE_AMOUNT->currencyID,
+                "FROM" => $sonuc->INVOICE->HEADER->FROM,
+                "TO" => $sonuc->INVOICE->HEADER->TO,
+                "PROFILEID" => $sonuc->INVOICE->HEADER->PROFILEID,
+                "STATUS" => $sonuc->INVOICE->HEADER->STATUS,
+                "STATUS_DESCRIPTION" => $sonuc->INVOICE->HEADER->STATUS_DESCRIPTION,
+                "ACIKLAMA" => Util::invoiceStatus($sonuc->INVOICE->HEADER->STATUS),
+                "STATUS" => $sonuc->INVOICE->HEADER->STATUS,
+                "GIB_STATUS_CODE" => $sonuc->INVOICE->HEADER->GIB_STATUS_CODE,
+                "GIB_STATUS_DESCRIPTION" => $sonuc->INVOICE->HEADER->GIB_STATUS_DESCRIPTION,
+                "RESPONSE_CODE" => $sonuc->INVOICE->HEADER->RESPONSE_CODE,
+                "RESPONSE_DESCRIPTION" => $sonuc->INVOICE->HEADER->RESPONSE_DESCRIPTION,
+                "FILENAME" => $sonuc->INVOICE->HEADER->FILENAME,
+                "HASH" => $sonuc->INVOICE->HEADER->HASH,
+                "CDATE" => $sonuc->INVOICE->HEADER->CDATE,
+                "ENVELOPE_IDENTIFIER" => $sonuc->INVOICE->HEADER->ENVELOPE_IDENTIFIER,
+                "INTERNETSALES" => $sonuc->INVOICE->HEADER->INTERNETSALES,
+                "EARCHIVE" => $sonuc->INVOICE->HEADER->EARCHIVE,
+                "TRXID" => $sonuc->INVOICE->TRXID,
+                "UUID" => $sonuc->INVOICE->UUID,
+                "ID" => $sonuc->INVOICE->ID,
+                "TYPE" => $sonuc->INVOICE->HEADER->INVOICE_TYPE,
+            );
+        }
+    }
+
+    function GetInvoiceRequest($faturaNo, $contentType = "XML", $gelen = false) {
+        $req_header = new RequestHeader();
+        $req_header->session_id = $this->getSessionId();
+        $send_data = $req_header->getArray();
+
+        $send_data["INVOICE_CONTENT_TYPE"] = $contentType;
+        $send_data["HEADER_ONLY"] = "N";
+        $send_data["INVOICE_SEARCH_KEY"]["LIMIT"] = 1;
+        $send_data["INVOICE_SEARCH_KEY"]["LIMITSpecified"] = true;
+
+        $send_data["INVOICE_SEARCH_KEY"]["DIRECTION"] = ($gelen ? "IN" : "OUT");
+        $send_data["INVOICE_SEARCH_KEY"]["ID"] = $faturaNo;
+
+        $req = new Request();
+        $sonuc = $req->send("GetInvoice", $send_data);
+        $this->setErr($req->hataKod, $req->hataMesaj);
+        return $sonuc;
+    }
+
+    function GetInvoiceStatus($faturaNo, $faturaUUID) {
+        $req_header = new RequestHeader();
+        $req_header->session_id = session('EFATURA_SESSION');
+        $send_data = $req_header->getArray();
+        $send_data["INVOICE"] = array("_" => "", "ID" => $faturaNo, "UUID" => $faturaUUID);
+        $req = new Request();
+        $sonuc = $req->send("GetInvoiceStatus", $send_data);
+        $sonuc->INVOICE_STATUS->ACIKLAMA = Util::invoiceStatus($sonuc->INVOICE_STATUS->STATUS);
+        $this->setErr($req->hataKod, $req->hataMesaj);
+        return $sonuc->INVOICE_STATUS;
+    }
+
+    
 }

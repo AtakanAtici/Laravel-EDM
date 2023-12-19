@@ -2,6 +2,8 @@
 
 namespace AtakanAtici\EDM\Classes;
 
+use App\Models\Tenant;
+
 class Fatura
 {
     const UBL_VERSION_ID = '2.1';
@@ -426,6 +428,14 @@ class Fatura
         return $this->additionalDocumentReference;
     }
 
+    public function withholding()
+    {
+        if($this->getSatirToplam() >= Tenant::first()->tevkifat_min_limit){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * @param  array  $additionalDocumentReference
      */
@@ -511,6 +521,23 @@ class Fatura
                 $satir_vergi->setVergiAd('KDV GERCEK');
                 $xmlStr .= $satir_vergi->readXML();
             }
+        }
+        if($this->withholding()){
+            $xmlStr .= '<cac:WithholdingTaxTotal>';
+            $xmlStr .= '<cbc:TaxAmount currencyID="TRY">20.25</cbc:TaxAmount>';
+            $xmlStr .= '<cac:TaxSubtotal>';
+            $xmlStr .=	'<cbc:TaxableAmount currencyID="TRY">22.5</cbc:TaxableAmount>';
+            $xmlStr .= '	<cbc:TaxAmount currencyID="TRY">20.25</cbc:TaxAmount>';
+            $xmlStr .= '	<cbc:CalculationSequenceNumeric>1</cbc:CalculationSequenceNumeric>';
+            $xmlStr .= '	<cbc:Percent>90</cbc:Percent>';
+            $xmlStr .= '	<cac:TaxCategory>';
+            $xmlStr .= '		<cac:TaxScheme>';
+            $xmlStr .= '<cbc:Name>--> (7/10,9/10) TEMİZLİK HİZMETİ *GT 117-Bölüm (3.2.10)+</cbc:Name>';
+            $xmlStr .= '			<cbc:TaxTypeCode>602</cbc:TaxTypeCode>';
+            $xmlStr .= '		</cac:TaxScheme>';
+            $xmlStr .= '	</cac:TaxCategory>';
+            $xmlStr .= '</cac:TaxSubtotal>';
+            $xmlStr .= '</cac:WithholdingTaxTotal>';
         }
         $xmlStr .= '<cac:LegalMonetaryTotal>';
         $xmlStr .= '<cbc:LineExtensionAmount currencyID="'.$this->getDocumentCurrencyCode().'">'.$this->getSatirToplam().'</cbc:LineExtensionAmount>';

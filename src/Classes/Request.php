@@ -27,6 +27,7 @@ class Request
                 throw new \Exception($sonuc->HataMesaji);
                 // return $sonuc->HataMesaji;
             }
+
             //var_dump($istemci->__getLastRequest());
             return $sonuc;
         } catch (\SoapFault $hata) {

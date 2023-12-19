@@ -430,9 +430,10 @@ class Fatura
 
     public function withholding()
     {
-        if($this->getSatirToplam() >= Tenant::first()->tevkifat_min_limit){
+        if ($this->getSatirToplam() >= Tenant::first()->tevkifat_min_limit) {
             return true;
         }
+
         return false;
     }
 
@@ -522,11 +523,11 @@ class Fatura
                 $xmlStr .= $satir_vergi->readXML();
             }
         }
-        if($this->withholding()){
+        if ($this->withholding()) {
             $xmlStr .= '<cac:WithholdingTaxTotal>';
             $xmlStr .= '<cbc:TaxAmount currencyID="TRY">20.25</cbc:TaxAmount>';
             $xmlStr .= '<cac:TaxSubtotal>';
-            $xmlStr .=	'<cbc:TaxableAmount currencyID="TRY">22.5</cbc:TaxableAmount>';
+            $xmlStr .= '<cbc:TaxableAmount currencyID="TRY">22.5</cbc:TaxableAmount>';
             $xmlStr .= '	<cbc:TaxAmount currencyID="TRY">20.25</cbc:TaxAmount>';
             $xmlStr .= '	<cbc:CalculationSequenceNumeric>1</cbc:CalculationSequenceNumeric>';
             $xmlStr .= '	<cbc:Percent>90</cbc:Percent>';
